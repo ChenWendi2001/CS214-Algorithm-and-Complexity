@@ -1,0 +1,377 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumitem,balance}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage[vlined,ruled,linesnumbered]{algorithm2e}
+\usepackage{threeparttable}
+\hypersetup{colorlinks=true,linkcolor=black}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+ {\setlength{\epsfxsize}{#2\hsize}
+  \centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Lab01-Algorithm Analysis}}\vspace{1mm}\\
+CS214-Algorithm and Complexity, Xiaofeng Gao, Spring 2021.}}
+\begin{center}
+\footnotesize{\color{red}$*$ If there is any problem, please contact TA Haolin Zhou. Also please use English in homework.}
+
+% Please write down your name, student id and email.
+\footnotesize{\color{blue}$*$ Name: Wendi Chen  \quad Student ID: 519021910071 \quad Email: chenwendi-andy@sjtu.edu.cn}
+\end{center}
+
+\begin{enumerate}
+
+
+\item \textit{Complexity Analysis.} Please analyze the time and space complexity of Alg.~\ref{Alg-quicksort} and Alg.~\ref{Alg-cocktailsort}. \par
+
+\begin{minipage}[t]{0.45\textwidth}
+	\begin{algorithm}[H]
+		\KwIn{An array $A[1,\cdots,n]$}
+		\KwOut{$A[1,\cdots,n]$ sorted nondecreasingly}
+		
+		\BlankLine
+		\caption{QuickSort}\label{Alg-quicksort}
+		
+		%\If{$n \le 1$}{
+		%  \Return\;
+		%}
+		
+		$pivot \leftarrow A[n]$; $i \leftarrow 1$\;
+		\For{$j \leftarrow 1$ \KwTo $n-1$}{
+			\If{$A[j] < pivot$}{
+				swap $A[i]$ and $A[j]$\;
+				$i \leftarrow i+1$\;
+			}
+		}
+		
+		swap $A[i]$ and $A[n]$\;
+		\lIf{$i>1$}{$\operatorname{QuickSort}(A[1,\cdots,i-1])$}
+		\lIf{$i<n$}{$\operatorname{QuickSort}(A[i+1,\cdots,n])$}
+	\end{algorithm}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.45\textwidth}
+\begin{algorithm}[H]
+\KwIn{An array $A[1,\cdots,n]$}
+\KwOut{$A[1,\cdots,n]$ sorted nonincreasingly}
+\BlankLine
+\caption{CocktailSort}
+\label{Alg-cocktailsort}
+\BlankLine
+	$i\leftarrow 1;$ $j\leftarrow n;$$sorted\leftarrow false$\;
+	\While{\textbf{not} sorted}{
+		$sorted \leftarrow true$\;
+		\For{$k\leftarrow i$ \textbf{to} $j-1$}{
+			\If{$A[k] < A[k+1]$}{
+				swap $A[k]$ and $A[k+1]$\;
+				$sorted\leftarrow false$\;
+			}
+		}
+		$j\leftarrow j-1$\;
+		
+
+		\For{$k\leftarrow j$ \textbf{downto} $i+1$}{
+			\If{$A[k-1] < A[k]$}{
+				swap $A[k-1]$ and $A[k]$\;
+				$sorted\leftarrow false$\;
+			}
+		}
+		$i\leftarrow i+1$\;
+	}
+\end{algorithm}
+\end{minipage}
+
+\begin{enumerate}
+	 
+\item Fill in the blanks and \textbf{explain} your answers. You need to answer when the best case and the worst case happen. 
+\begin{table}[!h]
+
+\label{Tab-compare}
+	\centering
+	\begin{threeparttable}
+	\begin{tabular}{c|c| c }
+		\toprule[2pt]
+		\textbf{Algorithm} & \textbf{Time Complexity}\tnote{1} & \textbf{Space Complexity} \\
+		\hline
+		\hline
+		$QuickSort$ &$\Omega(n\log n)$\quad $O(n\log n)$\quad $O(n^2)$& $\Omega(\log n)$\quad $O(\log n)$\quad$O(n)$\\
+
+		$CocktailSort$&$\Omega(n)$\quad $O(n^2)$\quad $O(n^2)$& $\Theta(1)\quad\Theta(1)\quad \Theta(1)$   \\
+		\bottomrule[2pt]
+
+
+	\end{tabular}
+    \begin{tablenotes}
+    	\footnotesize
+    	\item[1] The response order can be given in \emph{best}, \emph{average}, and \emph{worst}.
+    \end{tablenotes}
+	\end{threeparttable}
+\end{table}
+
+\item For Alg.~\ref{Alg-quicksort}, how to modify the algorithm to achieve the same expected performance as the \textbf{average} case when the \textbf{worst} case happens?
+\end{enumerate} 
+    \begin{solution}
+    ~
+    \begin{enumerate}
+    \item 
+      Let us analyze $QuickSort$ first.\\
+      ~\\
+      Time Complexity:\\
+      The \textbf{best} case happens when every time the pivot separates the array into two equally-sized subarrays.  In this situation, $QuickSort$ will separate the array approximately $\log n$ times. In the $i$-th time, there are approximately $2^{\log(n)-i} = \frac{n}{2^{i}}$  arrays of size $2^{i}$. Thus, the number of comparison in $QuickSort$ is at least  \begin{equation}
+          \sum_{i = 1}^{\log n} \frac{n}{2^i}\times 2^i = n\log n
+      \end{equation}
+      The \textbf{worst} case happens when every time the pivot separates the array into 1 and $n-1$ sized subarrays. For example, the array is originally ordered or reverse ordered. In this situation, $QuickSort$ will separate the array approximately $n$ times. In the $i$-th time, the number of comparison is $n-i$. Thus, the number of comparison in $QuickSort$ is at most
+      \begin{equation}
+          \sum_{i = 1}^{n}i-1 = \frac{n(n-1)}{2}
+      \end{equation}
+      For \textbf{average} case, define $T(n)$ as the average amount of comparison when sorting $n$ elements through $QuickSort$. If we assume in every separation the final position the pivot is equally likely, we have the recurrence
+      \begin{align}
+        \begin{split}
+          T(n) &= n-1 + \frac{1}{n}\sum_{i = 0}^{n-1}[T(i)+T(n-i-1)]\\ 
+          &= n-1 + \frac{2}{n}\sum_{i = 0}^{n-1}T(i)
+        \end{split}
+      \end{align}
+       In fact, we also know $T(0) = 0$ and $T(1) = 0$. To solve this, we set $P(n) = \frac{T(n)}{n+1}$
+       \begin{align}
+        \begin{split}
+           nT(n) - (n-1)T(n-1) &= n(n-1)-(n-1)(n-2)+2T(n-1)\\
+           \frac{T(n)}{n+1} &= \frac{T(n-1)}{n}+\frac{2(n-1)}{n(n+1)}
+        \end{split}
+       \end{align}
+       Then, we have $P(0)=P(1)= 0$ and
+       \begin{align} 
+        \begin{split}
+           P(n) &= P(n-1) + \frac{4}{n+1} - \frac{2}{n}\\
+           P(n)- \frac{2}{n+1}&=P(n-1)- \frac{2}{n} + \frac{2}{n+1}
+        \end{split}
+       \end{align}
+       Therefore, $P(n)$ satisfies
+       \begin{align}
+        \begin{split}
+           P(n)- \frac{2}{n+1} &= \sum_{j = 1}^{n}\frac{2}{j+1}-2 = O(\log n)\\
+           P(n)&=O(\log n)
+        \end{split}
+       \end{align}
+       Finally, we get
+       \begin{equation}
+           T(n )= (n+1)P(n) = O(n\log n)
+       \end{equation}
+       ~\\
+       Space Complexity:\\
+       The space complexity of $QuickSort$ is mainly the use of stack space caused by recursion. In the \textbf{best} case described above, the recursion tree is a balanced binary tree whose depth is $\log_2 n$. Thus the space complexity is at least $\Omega(\log n)$. For the \textbf{worst} case, the balanced binary tree degenerates into a linked list whose depth is $n$. Thus the space complexity is at most $O(n)$. For \textbf{average} case, we can solve this problem from a probability perspective. Every time we choose a pivot, if the final position of the pivot is located from 25 percent to 75 percent, we call it a \textbf{good pivot}. Obviously, the probability of a pivot being a good pivot is $\frac{1}{2}$. A good pivot will separate the array into two parts, both of which has a length no more than $\frac{3n}{4}$. If every time the pivot is a good pivot, the recursion depth will be about $\log_{\frac{3}{4}}n$. As the expectation of the number of times to get a good pivot is two. The expectation of the recursion depth is 
+       \begin{equation}
+           2\log_{\frac{3}{4}}n
+       \end{equation}
+       Thus the average space complexity of $QuickSort$ is $O(\log n)$.\\
+       
+       ~\\
+       Then let us analyze $CocktailSort$.\\
+       ~\\
+       Time Complexity:\\
+       The \textbf{best} case happens when the array is originally ordered. In this situation, it almost traverses the array twice and exits at once. The total amount of comparison will be 、
+       \begin{equation}
+           n-1+n-2 = 2n-3 = \Omega(n)
+       \end{equation}
+       The \textbf{worse} case happens when the array is reverse ordered. Then in each iteration, it will move the largest or smallest element to the head or tail of the array. Thus the total amount of comparison will be
+       \begin{equation}
+           \sum_{i=1}^{n-1}i = \frac{n(n-1)}{2} = O(n^2)
+       \end{equation}
+       For \textbf{average} case, we define $T(n)$ as the average amount of comparison when sorting $n$ elements through $CocktailSort$. As we already know the upper bound of $T(n)$ is $\frac{n(n-1)}{2}$, what we have to do is to determine the lower bound of $T(n)$. If$A[i]>A[j]$ when $i<j$, we call them a \textbf{reversed pair}. The principle of $CocktailSort$ is actually reducing the reversed pairs by one through one swap. Although amount of comparison is hard to count, the number of reversed pairs in the array is determined only by the array itself. Set $P(n)$ as the average number of reversed pairs in the array, it naturally follows
+       \begin{equation}
+           T(n)\ge P(n)
+       \end{equation}
+       because comparison is the prerequisite of swapping a reversed pair.
+       Thus, we can use $P(n)$ as the lower bound of $T(n)$.\\
+       Since for each pair of two element, the probability of being a reversed pair is obviously $\frac{1}{2}$. So the expectation of the number of reversed pair in a $n$-element array is
+       \begin{equation}
+           P(n) = \frac{1}{2}\frac{n(n-1)}{2} = \frac{n(n-1)}{4}
+       \end{equation}
+       Thus, we have 
+       \begin{equation}
+           T(n) \ge \frac{n(n-1)}{4}
+       \end{equation}
+       which indicates $T(n) = O(n^2)$.\\
+       ~\\
+       Space Complexity:\\
+       Since $CocktailSort$ only uses $i$,$j$,$k$ as temporary variables, the space complexity is $\Theta(1)$.
+       \item
+       The strategy of choosing $pivot$ matters. The main cause of the worst case is that the $pivot$ is always the largest or the smallest element, which will separates the array into 1 and $n−1$ sized subarrays. In order to reduce the probability of this situation, we can adopt a stochastic-based strategy. We can simply choose a random element as the pivot. The revised code is listed below(Alg. \ref{op-quicksort}).
+       
+       \begin{minipage}[t]{0.88\textwidth}
+	    \begin{algorithm}[H]
+		\KwIn{An array $A[1,\cdots,n]$}
+		\KwOut{$A[1,\cdots,n]$ sorted nondecreasingly}
+		
+		\BlankLine
+		\caption{Optimized QuickSort}\label{op-quicksort}
+	
+		$k \leftarrow random(1$ to  $n)$\;
+		swap $A[k]$ and $A[n]$\;
+		$pivot \leftarrow A[n]$; $i \leftarrow 1$\;
+		\For{$j \leftarrow 1$ \KwTo $n-1$}{
+			\If{$A[j] < pivot$}{
+				swap $A[i]$ and $A[j]$\;
+				$i \leftarrow i+1$\;
+			}
+		}
+		
+		swap $A[i]$ and $A[n]$\;
+		\lIf{$i>1$}{$\operatorname{QuickSort}(A[1,\cdots,i-1])$}
+		\lIf{$i<n$}{$\operatorname{QuickSort}(A[i+1,\cdots,n])$}
+	    \end{algorithm}
+        \end{minipage}
+       \end{enumerate}
+    \end{solution}
+    
+
+\item \textit{Growth Analysis.} Rank the following functions by order of growth with brief explanations: that is, find an arrangement $g_1, g_2, \ldots , g_{15}$ of the functions $g_1 = \Omega(g_2), g_2 = \Omega(g_3), \ldots, g_{14} = \Omega(g_{15})$.  Partition your list into equivalence classes such that functions $f(n)$ and $g(n)$ are in the same class if and only if $f(n) = \Theta(g(n))$. Use symbols ``$=$'' and ``$\prec$'' to order these functions appropriately. Here $\log n$ stands for $\ln n$.
+$$
+\begin{array}{ccccc}
+	1 \quad & \quad n \quad & \quad \log n \quad & \quad \log (\log n) \quad & \quad n \log n \\
+	\log_4 n \quad & \quad 2^n \quad & \quad 4^n \quad & \quad 2^{\log n} \quad & \quad 2^{2^n} \\
+	\log (n!) \quad & \quad n! \quad & \quad (2n)! \quad & \quad  n^{1/2} \quad & \quad n^2 \\
+\end{array}
+$$
+    \begin{solution}
+      ~\\
+      We can use the limit of the ratio of two functions to rank these functions. In fact, we have\\
+      ~\\
+      $1\prec\log (\log n)$ because
+      \begin{align}
+          \lim_{n\to \infty}\frac{1}{\log (\log n)} = 0 \quad\Rightarrow\quad 1 = o(\log (\log n))
+      \end{align}
+      ~\\
+      $\log (\log n)\prec\log_4 n$ because
+      \begin{align}
+          \lim_{n\to \infty}\frac{\log (\log n)}{\log_4 n} = \lim_{n\to \infty}\frac{\frac{1}{n\log n}}{\frac{c}{n}}  =0 \quad\Rightarrow\quad \log (\log n) = o(\log_4 n)
+      \end{align}
+      ~\\
+      $\log_4 n=\log n$ because
+      \begin{align}
+          \lim_{n\to \infty}\frac{\log_4 n}{\log n} = c\neq 0 \quad\Rightarrow\quad \log_4 = \Theta(\log n)
+      \end{align}
+      ~\\
+      $\log n\prec n^{\frac{1}{2}}$ because
+      \begin{align}
+          \lim_{n\to \infty}\frac{\log n}{n^{\frac{1}{2}}} =\lim_{n\to \infty}\frac{\frac{1}{n}}{\frac{1}{2n^{\frac{1}{2}}}}= 0 \quad\Rightarrow\quad \log n = o(n^{\frac{1}{2}})
+      \end{align}
+      ~\\
+      $n^{\frac{1}{2}}\prec 2^{\log n}$ because
+      \begin{align}
+          \lim_{n\to \infty}\frac{n^{\frac{1}{2}}}{2^{\log n}} =\lim_{n\to \infty}\frac{n^{\frac{1}{2}}}{2^{c\log_2 n}} =\lim_{n\to \infty}\frac{n^{\frac{1}{2}}}{n^{c}} 
+      \end{align}
+      where $c = log2 > 0.5$, then
+      \begin{align}
+          \lim_{n\to \infty}\frac{n^{\frac{1}{2}}}{n^{c}} = 0 \quad\Rightarrow\quad  n^{\frac{1}{2}} = o(2^{\log n})
+      \end{align}
+      ~\\
+      $ 2^{\log n}\prec n$ because
+      \begin{align}
+          \lim_{n\to \infty}\frac{2^{\log n}}{n} =\lim_{n\to \infty}\frac{2^{c\log_2 n}}{n}=\lim_{n\to \infty}\frac{n^c}{n}
+      \end{align}
+      where $c = log2 <1$, then
+      \begin{align}
+          \lim_{n\to \infty}\frac{n^c}{n} = 0 \quad\Rightarrow\quad 2^{\log n} = o(n)
+      \end{align}
+      ~\\
+      $n\prec n\log n$ because
+      \begin{align}
+          \lim_{n\to \infty}\frac{n}{n\log n} =\lim_{n\to \infty}\frac{1}{log n}=0 \quad\Rightarrow\quad n = o(n\log n)
+      \end{align}
+      ~\\
+      $n \log n=\log(n!)$ because
+      \begin{align}
+      \begin{split}
+          \log(n!) &= \sum_{i=2}^n \log i \leq n \log n\\
+          \log(n!) &= \sum_{i=2}^n \log i \ge \int_1^n log x dx = n\log n - n +1\\
+          &\Rightarrow n \log n=\Theta(\log(n!))
+      \end{split}
+      \end{align}
+      ~\\
+      $ n\log n\prec n^2$ because
+      \begin{align}
+          \lim_{n\to \infty}\frac{n\log n}{n^2} =\lim_{n\to \infty}\frac{\log n}{n}=0 \quad\Rightarrow\quad n\log n = o(n^2)
+      \end{align}
+      ~\\
+      $ n^2\prec 2^n$ because
+      \begin{align}
+          \lim_{n\to \infty}\frac{n^2}{2^n} =\lim_{n\to \infty}\frac{2n}{2^n\log 2}=\lim_{n\to \infty}\frac{2}{2^n(\log 2)^2}=0 \quad\Rightarrow\quad n^2 = o(2^n)
+      \end{align}
+      ~\\
+      $ 2^n\prec 4^n$ because
+      \begin{align}
+          \lim_{n\to \infty}\frac{2^n}{4^n} =\lim_{n\to \infty}\frac{1}{2^n}=0 \quad\Rightarrow\quad 2^n = o(4^n)
+      \end{align}
+      ~\\
+      $ 4^n\prec n!$ because
+      \begin{align}
+          0\leq\lim_{n\to \infty}\frac{4^n}{n!} \leq\lim_{n\to \infty}\frac{4^4}{1\times 2\times 3\times 4}(\frac{4}{5})^{n-4}=0 \quad\Rightarrow\quad 4^n = o(n!)
+      \end{align}
+      ~\\
+      $ n!\prec (2n)!$ because
+      \begin{align}
+          \lim_{n\to \infty}\frac{n!}{(2n)!} =\lim_{n\to \infty}\frac{1}{2n\times(2n-1)\times\dots\times(n+1)}=0 \quad\Rightarrow\quad n! = o((2n)!)
+      \end{align}
+      ~\\
+      $ (2n)!\prec 2^{2^n}$ because
+      \begin{align}
+          \lim_{n\to \infty}\frac{(2n)!}{2^{2^n}} =\lim_{n\to \infty}\frac{1\times2}{2^{2^1}}\frac{3\times4}{2^{2^1}}\dots\frac{(2n-3)\times(2n-2)}{2^{2^{n-2}}}\frac{(2n-1)\times(2n)}{2^{2^{n-1}}} 
+      \end{align}
+      when $n$ is large enough $$\frac{(2n-1)\times(2n)}{2^{2^{n-1}}}<\frac{1}{2}$$
+      Thus, we have
+      \begin{align}
+          0&\leq\lim_{n\to \infty}\frac{1\times2}{2^{2^1}}\frac{3\times4}{2^{2^1}}\dots\frac{(2n-3)\times(2n-2)}{2^{2^{n-2}}}\frac{(2n-1)\times(2n)}{2^{2^{n-1}}} \leq\lim_{k\to \infty}C(\frac{1}{2})^k = 0\\
+          &\Rightarrow (2n)! =  o(2^{2^n})
+      \end{align}
+      ~\\
+      The result is listed as below.
+    \begin{equation}
+    \begin{split}
+        1 &\prec  \log(\log n)  \prec  \log_4 n  = \log n  \prec  n^{\frac{1}{2}} 
+    	\prec2^{\log n} \prec n \prec  n \log n = \log(n!) \prec  n^2 
+    	\prec 2^n  \prec 4^n\\  &\prec n!  \prec   (2n)! \prec  2^{2^{n}}
+    \end{split}
+    \end{equation}
+    \end{solution}
+\end{enumerate}
+
+\vspace{20pt}
+
+\textbf{Remark:} You need to include your .pdf and .tex files in your uploaded .rar or .zip file.
+
+%========================================================================
+\end{document}
